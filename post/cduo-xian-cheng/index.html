@@ -1,11 +1,10 @@
 <html>
-
 <head>
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>友情链接 | Akcun</title>
+<title>C#多线程 | Akcun</title>
 
 <link rel="shortcut icon" href="https://Akcun.github.io/favicon.ico?v=1650240651843">
 
@@ -26,12 +25,11 @@
 
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
-
 <body>
 <div class="main gt-bg-theme-color-first">
-        <div class="main-content">
-            <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="/">
         <img class="user-avatar" src="/images/avatar.png" alt="头像">
         <div class="site-name gt-c-content-color-first">
@@ -99,25 +97,187 @@
     }
 </script>
 
-            <div class="post-container">
-                <div class="post-detail">
-                    <article>
-                        <!-- <div class="post-content-wrapper"> -->
-                            <div class="post-content">
-                                <div class="friends-desc">
-                                    
-                                </div>
-                                <h3 id="linklist">友链列表</h3>
-                                
-                                    
-                                
-                            </div>
-                        <!-- </div> -->
-                    </article>
-                </div>
-                
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    C#多线程
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-04-16 ·
+                    </time>
                     
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+                        <a href="https://Akcun.github.io/tag/LJx98HB4v/" class="post-tags">
+                            # 多线程
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>多线程</p>
+<p>使用System.Threading.Thread类</p>
+<p>Thread类是是控制线程的基础类，位于System.Threading命名空间下，具有4个重载的构造函数：</p>
+<p>构造函数</p>
+<table>
+<thead>
+<tr>
+<th>构造函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread.-ctor?view=net-5.0#system-threading-thread-ctor(system-threading-parameterizedthreadstart)">Thread(ParameterizedThreadStart)</a></td>
+<td>初始化 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread?view=net-5.0">Thread</a> 类的新实例，指定允许对象在线程启动时传递给线程的委托。</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread.-ctor?view=net-5.0#system-threading-thread-ctor(system-threading-parameterizedthreadstart-system-int32)">Thread(ParameterizedThreadStart, Int32)</a></td>
+<td>初始化 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread?view=net-5.0">Thread</a> 类的新实例，指定允许对象在线程启动时传递给线程的委托，并指定线程的最大堆栈大小。</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread.-ctor?view=net-5.0#system-threading-thread-ctor(system-threading-threadstart)">Thread(ThreadStart)</a></td>
+<td>初始化 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread?view=net-5.0">Thread</a> 类的新实例。</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread.-ctor?view=net-5.0#system-threading-thread-ctor(system-threading-threadstart-system-int32)">Thread(ThreadStart, Int32)</a></td>
+<td>初始化 <a href="https://docs.microsoft.com/zh-cn/dotnet/api/system.threading.thread?view=net-5.0">Thread</a> 类的新实例，指定线程的最大堆栈大小。</td>
+</tr>
+</tbody>
+</table>
+<p>1.最简单的多线程</p>
+<pre><code class="language-c#">using System;
+using System.Threading;
+
+namespace ThreadTest1
+{
+    public class SimpleThread
+    {
+        public void Run()
+        {
+            Thread t1 = new Thread(new ThreadStart(this.ThreadFunc));
+            Thread t2 = new Thread(new ThreadStart(this.ThreadFunc));
+            t1.Start();
+            Thread.Sleep(1000);
+            t2.Start();
+        }
+
+        private void ThreadFunc()
+        {
+            for (int i = 0; i &lt; 100; i++)
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(100);
+            }
+        }
+    }
+}
+</code></pre>
+<p>2.可以传参数的多线程</p>
+<pre><code class="language-java">using System;
+using System.Threading;
+
+namespace ThreadTest1
+{
+    class ThreadWithPara
+    {
+        public void Run()
+        {
+            Thread t1 = new Thread(ThreadFunc);
+            Thread t2 = new Thread(new ParameterizedThreadStart(ThreadFunc));
+            t1.Start(&quot;t1&quot;);
+            Thread.Sleep(1000);
+            t2.Start(&quot;t2&quot;);
+        }
+
+        private void ThreadFunc(object obj)
+        {
+            for (int i = 0; i &lt; 100; i++)
+            {
+                Console.WriteLine(i + obj.ToString());
+                Thread.Sleep(100);
+            }
+        }
+    }
+}
+</code></pre>
+<p>3.自定义类的多线程</p>
+<pre><code class="language-c#">using System;
+using System.Threading;
+
+namespace ThreadTest1
+{
+    class MyThreadClass
+    {
+        private string data;
+
+        public MyThreadClass(string data)
+        {
+            this.data = data;
+        }
+
+        public void ThreadMain()
+        {
+            Console.WriteLine(&quot;Running in a thread,data: {0}&quot;, data);
+        }
+    }
+
+    class MainClass
+    {
+        public void Run()
+        {
+            MyThreadClass mtc = new MyThreadClass(&quot;thread1&quot;);
+            Thread thread = new Thread(mtc.ThreadMain);
+            thread.Start();
+        }
+    }
+}
+</code></pre>
+<ol start="4">
+<li>匿名方法实现的多线程</li>
+</ol>
+<pre><code class="language-c#">using System;
+using System.Threading;
+
+namespace ThreadTest1
+{
+    public class AnonymousThread
+    {
+        public void Run()
+        {
+            Thread t1 = new Thread(() =&gt; ThreadFunc(&quot;thread-1&quot;));
+            t1.Start();
+        }
+
+        private void ThreadFunc(string obj)
+        {
+            for (int i = 0; i &lt; 100; i++)
+            {
+                Console.WriteLine(i + obj.ToString());
+                Thread.Sleep(100);
+            }
+        }
+    }
+}
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://Akcun.github.io/post/about/" class="post-title gt-a-link">
+                    关于
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
 <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 <script>
     // md5.min.js
@@ -160,15 +320,14 @@
 
 </script>
 
-                    
+            
 
-                    
-                
-            </div>
+            
+        
 
+        
 
-
-            <div class="site-footer gt-c-content-color-first">
+        <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first">生于🐟忧患 死于🐟安乐</div>
     <div class="social-container">
         
@@ -210,8 +369,7 @@
   hljs.highlightAll()
 </script>
 
-        </div>
     </div>
+</div>
 </body>
-
 </html>
